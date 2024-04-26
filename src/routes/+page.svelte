@@ -1,5 +1,25 @@
-<script>
-	let btn = 'btn1';
+<script lang="ts">
+	import Card from '../components/card.svelte';
+
+	import { loadData } from '$lib/index';
+	import { onMount } from 'svelte';
+	import type { Coffee } from '$lib/interfaces';
+
+	let btn: string = 'btn1';
+	let coffees: Coffee[] = [];
+
+	onMount(async () => {
+		coffees = await loadData();
+	});
+
+	const filters = async (name: string) => {
+		if (name === 'btn1') {
+			coffees = await loadData();
+		} else {
+			coffees = coffees.filter((e) => e.available !== false);
+		}
+		return (btn = name);
+	};
 </script>
 
 <div class="bg"></div>
@@ -11,13 +31,19 @@
 			and origins, expertly roasted in small batches and shipped fresh weekly.
 		</p>
 		<div>
-			<button class:btnActive={btn === 'btn1'} on:click={() => (btn = 'btn1')}>All Products</button>
-			<button class:btnActive={btn === 'btn2'} on:click={() => (btn = 'btn2')}>Available Now</button
+			<button class:btnActive={btn === 'btn1'} on:click={() => filters('btn1')}>All Products</button
+			>
+			<button class:btnActive={btn === 'btn2'} on:click={() => filters('btn2')}
+				>Available Now</button
 			>
 		</div>
 	</div>
-	<div>
-		<!-- TODO: Cards -->
+	<div class="cards-container">
+		{#each coffees as coffee}
+			<Card {...coffee} />
+		{:else}
+			<p>Loading ...</p>
+		{/each}
 	</div>
 </div>
 
@@ -49,14 +75,17 @@
 		margin: 8px 0px;
 	}
 	.container {
-		position: absolute;
-		top: 160px;
 		background-color: #1b1d1f;
 		background-image: url('../assets/vector.svg');
 		background-repeat: no-repeat;
-		background-position: calc(50% - -8rem) calc(19%);
+		background-position: calc(50% - -8rem) calc(1%);
 		padding: 80px 40px;
 		border-radius: 10px;
+		margin: 10rem 1rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		z-index: 2;
 	}
 	.container-info {
 		display: flex;
@@ -66,6 +95,7 @@
 	}
 	.bg {
 		background-image: url('../assets/bg-cafe.jpg');
+		position: absolute;
 		background-size: cover;
 		min-height: 300px;
 		width: 100%;
@@ -79,18 +109,31 @@
 		font-weight: 500;
 		margin: 12px 6px;
 		border-radius: 5px;
+		transition: all linear 0.2s;
 	}
 	.btnActive {
 		background: #6f757c;
+	}
+	.cards-container {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 64px 32px;
+		margin-top: 28px;
 	}
 	@media (min-width: 1024px) {
 		.container {
 			padding: 80px;
 		}
+		.cards-container {
+			grid-template-columns: repeat(2, 1fr);
+		}
 	}
 	@media (min-width: 1080px) {
 		.container {
 			padding: 80px 124px;
+		}
+		.cards-container {
+			grid-template-columns: repeat(3, 1fr);
 		}
 	}
 </style>
