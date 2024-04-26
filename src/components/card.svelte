@@ -21,13 +21,13 @@
 	<div class="section2">
 		{#if rating > 0}
 			<p class="rating">
-				<img src="../assets/Star_fill.svg" alt="star" />
+				<img src="./assets/Star_fill.svg" alt="star" />
 				<strong>{rating}</strong>
 				{votes > 0 ? `(${votes} votes)` : `No ratings`}
 			</p>
 		{:else}
 			<p class="rating">
-				<img src="../assets/Star.svg" alt="star" />
+				<img src="./assets/Star.svg" alt="star" />
 				{votes > 0 ? `(${votes} votes)` : `No ratings`}
 			</p>
 		{/if}
