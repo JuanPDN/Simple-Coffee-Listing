@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { blur } from 'svelte/transition';
 
+    let starFill = '/Star_fill.svg';
+    let star = '/Star.svg';
+
 	export let available: boolean;
 	export let id: number;
 	export let image: string;
@@ -21,13 +24,13 @@
 	<div class="section2">
 		{#if rating > 0}
 			<p class="rating">
-				<img src="/src/assets/Star_fill.svg" alt="star" />
+				<img src={starFill} alt="star" />
 				<strong>{rating}</strong>
 				{votes > 0 ? `(${votes} votes)` : `No ratings`}
 			</p>
 		{:else}
 			<p class="rating">
-				<img src="/src/assets/Star.svg" alt="star" />
+				<img src={star} alt="star" />
 				{votes > 0 ? `(${votes} votes)` : `No ratings`}
 			</p>
 		{/if}
